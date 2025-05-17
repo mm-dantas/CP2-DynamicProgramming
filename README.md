@@ -2,8 +2,11 @@
 
 # Organizador de Dados em Lista Ligada 
 
-## Descrição
-Este projeto implementa um sistema para organizar números inteiros armazenados em uma estrutura de lista ligada customizada. A principal funcionalidade é ordenar os dados de acordo com critérios específicos: números positivos (incluindo zero) são ordenados usando Merge Sort, e números negativos são ordenados usando uma versão adaptada do Radix Sort.
+Este projeto implementa uma **estrutura de lista ligada (Linked List)** e aplica dois algoritmos de ordenação distintos:
+
+- 🔵 `Merge Sort` para os **valores positivos**
+- 🔴 `Radix Sort` adaptado para os **valores negativos**
+
 
 Todo o processo de ordenação é realizado diretamente sobre a estrutura da lista ligada, sem recorrer à conversão para arrays ou listas nativas do Python. O programa também exibe as complexidades teóricas dos algoritmos de ordenação utilizados e mede o tempo real de execução para cada um deles.
 
