@@ -4,16 +4,6 @@
 
 Este projeto implementa uma solução para organizar uma lista ligada de números inteiros, utilizando dois algoritmos de ordenação distintos: Radix Sort para os números negativos e Merge Sort para os números positivos (incluindo zero).
 
-## Como Executar
-
-1.  Salve o código Python em um arquivo (por exemplo, `organizador_lista.py`).
-2.  Abra um terminal ou prompt de comando.
-3.  Navegue até o diretório onde salvou o arquivo.
-4.  Execute o script usando o interpretador Python:
-    ```bash
-    python organizador_lista.py
-    ```
-5.  Os resultados da ordenação e os tempos de execução serão exibidos no console. Você pode modificar a lista `entrada` no bloco `if __name__ == "__main__":` para testar com diferentes dados ou tamanhos de lista (usando a linha comentada `random.randint`).
 
 ## Estrutura do Código
 
