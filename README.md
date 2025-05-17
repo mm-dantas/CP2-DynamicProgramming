@@ -237,3 +237,82 @@ def radix_sort_negativos(lista):
    - Distribui os números da lista de absolutos para os baldes apropriados, com base no dígito atual (determinado por (valor // exp) % 10).
    - Coleta os números dos baldes, concatenando-os de volta na lista de absolutos. A coleta é feita dos baldes 0 a 9 para garantir que a lista de absolutos fique ordenada crescentemente a cada passada com base no dígito atual.
    - exp é multiplicado por 10 para processar o próximo dígito na próxima iteração.
+
+- Passo 3 (Reconversão para Negativos):
+    - Cria uma nova lista ligada para armazenar os resultados finais negativos.
+    - Percorre a lista de absolutos ordenada (que agora está em ordem crescente de magnitude, ex: 1, 7, 99).
+    - Para cada valor absoluto, nega-o e o insere na lista final de negativos.
+    - Importante: Como a lista de absolutos foi ordenada crescentemente (1, 7, 99), ao negar os valores, a lista de negativos resultante estará em ordem decrescente de magnitude (-1, -7, -99). Se a intenção fosse ter os negativos em ordem crescente (-99, -7, -1), a coleta nos baldes no Passo 2 deveria ter sido feita dos baldes 9 a 0 para ordenar os absolutos decrescentemente (99, 7, 1) antes de negar.
+
+## Função Principal de Organização organizar_lista
+
+```python
+
+# Função principal de organização
+def organizar_lista(lista_original):
+    # Divide a lista original em negativas e positivas/zero
+    lista_neg, lista_pos = lista_original.dividir_em_listas()
+
+    # Ordena a lista negativa usando Radix Sort e mede o tempo
+    tempo_inicio_radix = time.time()
+    lista_neg_ordenada = radix_sort_negativos(lista_neg)
+    tempo_fim_radix = time.time()
+    tempo_resul_radix = tempo_fim_radix - tempo_inicio_radix
+
+    # Ordena a lista positiva usando Merge Sort e mede o tempo
+    # Nota: merge_sort_positivos opera diretamente nos nós, então atualizamos a cabeça
+    tempo_inicio_merge = time.time()
+    lista_pos.cabeca = merge_sort_positivos(lista_pos.cabeca)
+    tempo_fim_merge = time.time()
+    tempo_resul_merge = tempo_fim_merge - tempo_inicio_merge
+
+    # Concatenar as listas (negativas ordenadas + positivas ordenadas)
+    lista_final = ListaLigada()
+    # Adiciona os negativos ordenados
+    for no in lista_neg_ordenada.iterar():
+        lista_final.inserir(no.valor)
+    # Adiciona os positivos ordenados
+    for no in lista_pos.iterar():
+        lista_final.inserir(no.valor)
+
+    # Impressão dos resultados e métricas
+    print("Lista negativa ordenada por Radix Sort: ", lista_neg_ordenada.imprimir())
+    print("Lista positiva ordenada por Merge Sort: ", lista_pos.imprimir())
+    print("Lista final concatenada: ", lista_final.imprimir())
+    # Impressão das complexidades para os tamanhos das sublistas do exemplo
+    print("Complexidade teórica de Merge Sort O(n log n) para n=5: ", 5 * math.log(5))
+    print("Complexidade teórica de Radix Sort O(nk) para n=3, k=2: ", 3 * 2)
+    print("Tempo de execução do Radix Sort: ", tempo_resul_radix)
+    print("Tempo de execução do Merge Sort: ", tempo_resul_merge)
+
+```
+
+- Descrição: Esta é a função que orquestra todo o processo de organização.
+- Recebe a lista_original como entrada.
+- Chama dividir_em_listas() para separar os números negativos e positivos/zeros em duas listas distintas.
+- Mede o tempo de execução do radix_sort_negativos na lista de negativos e armazena o resultado.
+- Mede o tempo de execução do merge_sort_positivos na lista de positivos e armazena o resultado.
+- Cria uma nova lista ligada lista_final.
+- Concatena os elementos da lista negativa ordenada e os elementos da lista positiva ordenada em lista_final. Nota: Dada a implementação atual do radix_sort_negativos (que ordena absolutos crescentemente e nega), a lista negativa estará em ordem decrescente de magnitude (-1, -7, -99 no exemplo). A lista positiva estará em ordem crescente (0, 3, 12, 23, 45). A concatenação colocará os negativos (decrescentes por magnitude) antes dos positivos (crescentes), resultando em uma lista que não está estritamente em ordem crescente globalmente ([-1, -7, -99, 0, 3, 12, 23, 45] se a ordem fosse correta, mas com a implementação atual será [-1, -7, -99, 0, 3, 12, 23, 45]). Para uma ordem crescente global correta ([-99, -7, -1, 0, 3, 12, 23, 45]), o Radix Sort deveria ordenar os absolutos decrescentemente ou os negativos deveriam ser mesclados de forma diferente.
+- Imprime as listas intermediárias ordenadas (negativas e positivas) e a lista final concatenada.
+- Calcula e imprime valores teóricos simples para as complexidades dos algoritmos com base nos tamanhos das sublistas do exemplo fixo.
+- Imprime os tempos de execução medidos para cada algoritmo.
+
+## Bloco de Execução Principal
+```python
+if __name__ == "__main__":
+    lista = ListaLigada()
+    entrada = [-99, -7, -1, 0, 3, 12, 23, 45]
+#    entrada = [random.randint(-100, 100) for _ in range(1200)]  #caso queira colocar mais dados para ver o tempo de execução
+    for numero in entrada:
+        lista.inserir(numero)
+
+    organizar_lista(lista)
+```
+
+- Descrição: Este bloco é o ponto de entrada do script quando ele é executado diretamente.
+- if __name__ == "__main__":: Garante que o código dentro deste bloco só será executado quando o script for o programa principal (e não quando for importado como módulo em outro script).
+- Cria uma nova instância da ListaLigada.
+- Define uma lista Python (entrada) com os números a serem organizados. Você pode usar a linha comentada para gerar uma lista maior e aleatória para testar o desempenho com mais dados.
+- Percorre a lista entrada e insere cada número na lista ligada.
+- Chama a função organizar_lista passando a lista ligada criada para iniciar o processo de divisão, ordenação e concatenação.
